@@ -24,7 +24,7 @@ public Member getMemberById(int member_id, String authToken) throws JsonMappingE
     String memberRequestBody = "{\"member_id\": 4}"; 
     HttpEntity<String> requestEntity = new HttpEntity<>(memberRequestBody, headers);
     RestTemplate restTemplate = new RestTemplate();
-    String apiUrl = "http://localhost:3000/api/v1/members/get_member_by_id"; 
+    String apiUrl = "https://stormy-hamlet-97616-f066246815d5.herokuapp.com/api/v1/members/get_member_by_id"; 
     ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, String.class);
     
     if (response.getStatusCode().is2xxSuccessful()) {

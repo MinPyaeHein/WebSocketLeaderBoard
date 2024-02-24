@@ -34,7 +34,9 @@ public class ScoreBoardController {
     public JsonNode GetTeamInvestScores(final Message message) throws Exception {
         scoreBoardService=new ScoreBoardService();
         System.out.println("Arrive to GetTeamInvestScores");
-        String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMX0.hjKR9MOIHW3OgUamQHGaqBRKdMWsn3qkYJvxo7BPEj8"; 
+     
+//      String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMX0.hjKR9MOIHW3OgUamQHGaqBRKdMWsn3qkYJvxo7BPEj8"; 
+        String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE"; 
         
         JsonNode jsonNode=scoreBoardService.GetTeamInvestScores(11, authToken);
        

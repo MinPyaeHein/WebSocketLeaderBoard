@@ -74,7 +74,8 @@ public class MessageController {
         messageService=new MessageService();
         Member member = null;
         System.out.println("Arrive to GetMemberById");
-        String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMX0.hjKR9MOIHW3OgUamQHGaqBRKdMWsn3qkYJvxo7BPEj8"; // Replace this with your actual auth token
+//        String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMX0.hjKR9MOIHW3OgUamQHGaqBRKdMWsn3qkYJvxo7BPEj8";
+        String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE"; // Replace this with your actual auth token
         member =messageService.getMemberById(4, authToken);
        
         return member;

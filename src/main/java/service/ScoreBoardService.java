@@ -28,7 +28,7 @@ public class ScoreBoardService {
 	    String memberRequestBody = "{\"event_id\": " +event_id+"}"; 
 	    HttpEntity<String> requestEntity = new HttpEntity<>(memberRequestBody, headers);
 	    RestTemplate restTemplate = new RestTemplate();
-	    String apiUrl = "http://localhost:3000/api/v1/tran_investors/invest_amounts_by_team"; 
+	    String apiUrl = "https://stormy-hamlet-97616-f066246815d5.herokuapp.com/api/v1/tran_investors/invest_amounts_by_team"; 
 	    ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, String.class);
 	    
 	    if (response.getStatusCode().is2xxSuccessful()) {
