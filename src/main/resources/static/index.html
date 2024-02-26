@@ -14,7 +14,11 @@
                     show(JSON.parse(result.body));
                 });
                stompClient.subscribe('/all/messages/distrbuteMember', function(result) {
-                    show(JSON.parse(result.body));
+            	   show(JSON.parse(result.body));
+                });
+               stompClient.subscribe('/all/messages/GetMemberById', function(result) {
+            	   showMember(JSON.parse(result.body));
+            		console.log("Arrive GetMemberById subscribe")
                 });
                stompClient.subscribe('/all/scoreBoard/GetTeamInvestScores', function(result) {
             	   updateDataTable(JSON.parse(result.body));
@@ -36,6 +40,7 @@
                 var text = document.getElementById('text2').value;
                 stompClient.send("/app/application/GetMemberById", {},
                   JSON.stringify({'text':text}));
+            	console.log("Arrive GetMemberById sender")
             }
             function GetTeamInvestScores() {
                 var text = document.getElementById('text3').value;
@@ -44,9 +49,10 @@
             }
 
             function showMember(message) {
+            	console.log("Arrive Show member create view")
                 var response = document.getElementById('messages');
 
-                // Create a new paragraph element for each property
+              
                 var p1 = document.createElement('p');
                 p1.innerHTML = "Member ID: " + message.member_id;
                 response.appendChild(p1);
@@ -139,7 +145,7 @@
 		    <!-- Table body will be populated dynamically -->
 		  </tbody>
          </table>
-        
+        <p></p>
 
 </div>
 
