@@ -1,0 +1,60 @@
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+    <script type="text/javascript">
+            var stompClient = null;
+            var privateStompClient = null;
+
+            var socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function(frame) {
+               
+               stompClient.subscribe('/all/application/investToTeam', function(result) {
+            	   show(JSON.parse(result.body));
+               });
+            });
+            
+
+           
+          
+            function investToTeam() {
+                var team_id = document.getElementById('team_id').value;
+                var judge_id = document.getElementById('judge_id').value;
+                var event_id = document.getElementById('event_id').value;
+
+         
+
+                stompClient.send("/app/application/investToTeam", {},
+                    JSON.stringify({
+                        'team_id': team_id,
+                        'judge_id': judge_id,
+                        'event_id': event_id
+                    }));
+            }
+            function show(message) {
+                var response = document.getElementById('messages');
+                var p = document.createElement('p');
+                p.innerHTML= "Message: "  + message.success;
+                response.appendChild(p);
+            }
+
+
+            
+
+        </script>
+</head>
+<body>
+<div>
+    
+ <div id="messages"></div>
+   
+<input type="number" id="team_id" placeholder="Team Id"><br>
+<input type="number" id="event_id" placeholder="Event Id"><br>
+<input type="number" id="judge_id" placeholder="Judge Id"><br>
+<button onclick="investToTeam()">Send Message</button>
+
+
+
+</body>
+</html>

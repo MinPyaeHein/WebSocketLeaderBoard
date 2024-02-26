@@ -1,4 +1,4 @@
-package com.leaderboard.websocket;
+package config;
 
 public class Message {
 

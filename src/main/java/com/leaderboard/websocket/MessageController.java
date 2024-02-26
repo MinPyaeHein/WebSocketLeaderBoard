@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import config.Message;
 import model.Member;
 import service.MessageService;
 
@@ -24,7 +25,6 @@ public class MessageController {
    
     MessageService messageService;
 
-    // Mapped as /app/application
     @MessageMapping("/application")
     @SendTo("/all/messages")
     public Message send(final Message message) throws Exception {
