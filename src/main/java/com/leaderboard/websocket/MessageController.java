@@ -54,7 +54,7 @@ public class MessageController {
         headers.set("Authorization",authToken);
         HttpEntity<String> entity = new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
-        String apiUrl = "http://127.0.0.1:3000/api/v1/members"; // Assuming message has a method getMemberId()
+        String apiUrl = "https://stormy-hamlet-97616-f066246815d5.herokuapp.com/api/v1/members"; // Assuming message has a method getMemberId()
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
         if (response.getStatusCode().is2xxSuccessful()) {
             String responseBody = response.getBody();
