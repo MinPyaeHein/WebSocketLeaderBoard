@@ -5,88 +5,27 @@
     <script type="text/javascript">
             var stompClient = null;
             var privateStompClient = null;
-
             var socket = new SockJS('/ws');
             stompClient = Stomp.over(socket);
-            stompClient.connect({}, function(frame) {
-                console.log(frame);
-                stompClient.subscribe('/all/messages', function(result) {             	
-                    show(JSON.parse(result.body));
-                });
-               stompClient.subscribe('/all/messages/distrbuteMember', function(result) {
-            	   show(JSON.parse(result.body));
-                });
-               stompClient.subscribe('/all/messages/GetMemberById', function(result) {
-            	   showMember(JSON.parse(result.body));
-            		console.log("Arrive GetMemberById subscribe")
-                });
-               stompClient.subscribe('/all/scoreBoard/GetTeamInvestScores', function(result) {
+            
+            stompClient.connect({}, function(frame) {  
+               console.log("Getting Data From Sever")
+               stompClient.subscribe('/specific/scoreBoard/GetTeamInvestScores', function(result) {
             	   updateDataTable(JSON.parse(result.body));
                });
+               
             });
-            
-
-            function sendMessage() {
-                var text = document.getElementById('text').value;
-                stompClient.send("/app/application", {},
-                  JSON.stringify({'text':text}));
-            }
-            function distrbuteMember() {
-                var text = document.getElementById('text1').value;
-                stompClient.send("/app/application/distrbuteMember", {},
-                  JSON.stringify({'text':text}));
-            }
-            function GetMemberById() {
-                var text = document.getElementById('text2').value;
-                stompClient.send("/app/application/GetMemberById", {},
-                  JSON.stringify({'text':text}));
-            	console.log("Arrive GetMemberById sender")
-            }
+           
+          
             function GetTeamInvestScores() {
-                var text = document.getElementById('text3').value;
-                stompClient.send("/app/application/GetTeamInvestScores", {},
-                  JSON.stringify({'text':text}));
+                var event_id = document.getElementById('event_id').value;
+                stompClient.send("/app/scoreBoard/GetTeamInvestScores", {},
+                  JSON.stringify({'event_id':event_id}));
             }
 
-            function showMember(message) {
-            	console.log("Arrive Show member create view")
-                var response = document.getElementById('messages');
-
-              
-                var p1 = document.createElement('p');
-                p1.innerHTML = "Member ID: " + message.member_id;
-                response.appendChild(p1);
-
-                var p2 = document.createElement('p');
-                p2.innerHTML = "Name: " + message.name;
-                response.appendChild(p2);
-
-                var p3 = document.createElement('p');
-                p3.innerHTML = "Phone: " + message.phone;
-                response.appendChild(p3);
-
-                var p4 = document.createElement('p');
-                p4.innerHTML = "Active: " + message.active;
-                response.appendChild(p4);
-
-                var p5 = document.createElement('p');
-                p5.innerHTML = "Profile URL: " + message.profile_url;
-                response.appendChild(p5);
-
-                var p6 = document.createElement('p');
-                p6.innerHTML = "Address: " + message.address;
-                response.appendChild(p6);
-
-                var p7 = document.createElement('p');
-                p7.innerHTML = "Organization Name: " + message.org_name;
-                response.appendChild(p7);
-            }
             function updateDataTable(teamInvestScores) {
             	  var tableBody = document.querySelector("#teamInvestScoresTable tbody");
-            	  // Clear existing table rows
             	  tableBody.innerHTML = "";
-
-            	  // Iterate over the teamInvestScores array and populate the table
             	  teamInvestScores.forEach(function(score) {
             	    var row = tableBody.insertRow();
             	    row.insertCell(0).textContent = score.name;
@@ -97,31 +36,15 @@
             	  });
             	}
 
-            function show(message) {
-                var response = document.getElementById('messages');
-                var p = document.createElement('p');
-                p.innerHTML= "Message: "  + message.text;
-                response.appendChild(p);
-            }
+            
         </script>
 </head>
 <body>
 <div>
-    <div>
-        <button id="sendMessage" onclick="sendMessage();">Send</button>
-        <input type="text" id="text" placeholder="sendMessage"/>
-    </div>
-     <div>
-        <button id="distrbuteMember" onclick="distrbuteMember();">Send</button>
-        <input type="text1" id="text1" placeholder="distrbuteMember"/>
-    </div>
-     <div>
-        <button id="GetMemberById" onclick="GetMemberById();">Send</button>
-        <input type="text2" id="text2" placeholder="GetMemberById"/>
-    </div>
+    
     <div>
         <button id="GetTeamInvestScores" onclick="GetTeamInvestScores();">Send</button>
-        <input type="text3" id="text3" placeholder="GetTeamInvestScores"/>
+        <input type="number" id="event_id" placeholder="Put Event Id"/>
     </div>
    
    

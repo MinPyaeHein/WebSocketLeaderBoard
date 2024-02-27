@@ -36,19 +36,17 @@ public class InvestToTeamService {
         HttpEntity<String> requestEntity = new HttpEntity<>(memberRequestBody, headers);
         RestTemplate restTemplate = new RestTemplate();
         String apiUrl = "https://stormy-hamlet-97616-f066246815d5.herokuapp.com/api/v1/tran_investors";
-        
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, String.class);
         JsonNode message = null;
-
         if (response.getStatusCode().is2xxSuccessful()) {
             String responseBody = response.getBody();
             System.out.println(responseBody);
-
             JsonNode root = mapper.readTree(responseBody);
             message = root.get("message");
-            System.out.println(message);
+            System.out.println("Message="+message);
         } else {
             System.out.println("Failed to fetch data from the API: " + response.getStatusCode() + " " + response.getBody());
+            return message;
         }
 
         return message;

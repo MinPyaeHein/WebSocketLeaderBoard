@@ -5,26 +5,19 @@
     <script type="text/javascript">
             var stompClient = null;
             var privateStompClient = null;
-
             var socket = new SockJS('/ws');
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                
-               stompClient.subscribe('/all/application/investToTeam', function(result) {
+               stompClient.subscribe('/specific/application/investToTeam', function(result) {
             	   show(JSON.parse(result.body));
                });
             });
-            
 
-           
-          
             function investToTeam() {
                 var team_id = document.getElementById('team_id').value;
                 var judge_id = document.getElementById('judge_id').value;
                 var event_id = document.getElementById('event_id').value;
-
-         
-
                 stompClient.send("/app/application/investToTeam", {},
                     JSON.stringify({
                         'team_id': team_id,
@@ -34,27 +27,34 @@
             }
             function show(message) {
                 var response = document.getElementById('messages');
+                
+               
                 var p = document.createElement('p');
-                p.innerHTML= "Message: "  + message.success;
+
+                
+                var messageText = "Transaction ID: " + message.tranInvestor.id + "<br>" +
+                                  "Amount: " + message.tranInvestor.amount + "<br>" +
+                                  "Description: " + (message.tranInvestor.desc || "N/A") + "<br>" +
+                                  "Event ID: " + message.tranInvestor.event_id + "<br>" +
+                                  "Judge ID: " + message.tranInvestor.judge_id + "<br>" +
+                                  "Judge's Current Amount: " + message.judge.current_amount;
+
+               
+                p.innerHTML = "Message:<br>" + messageText;
+
+               
                 response.appendChild(p);
             }
-
-
-            
-
         </script>
 </head>
 <body>
-<div>
-    
- <div id="messages"></div>
-   
+  
 <input type="number" id="team_id" placeholder="Team Id"><br>
 <input type="number" id="event_id" placeholder="Event Id"><br>
 <input type="number" id="judge_id" placeholder="Judge Id"><br>
 <button onclick="investToTeam()">Send Message</button>
 
-
+ <div id="messages"></div>
 
 </body>
 </html>

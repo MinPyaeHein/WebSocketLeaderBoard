@@ -49,12 +49,12 @@ public class MessageController {
     @SendTo("/all/messages/distrbuteMember")
     public Message distrbuteMember(final Message message) throws Exception {
     	System.out.println("Arrive to distribute Member message");
-        String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE"; // Replace this with your actual auth token
+        String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE"; 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization",authToken);
         HttpEntity<String> entity = new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
-        String apiUrl = "https://stormy-hamlet-97616-f066246815d5.herokuapp.com/api/v1/members"; // Assuming message has a method getMemberId()
+        String apiUrl = "https://stormy-hamlet-97616-f066246815d5.herokuapp.com/api/v1/members"; 
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
         if (response.getStatusCode().is2xxSuccessful()) {
             String responseBody = response.getBody();
@@ -74,8 +74,7 @@ public class MessageController {
         messageService=new MessageService();
         Member member = null;
         System.out.println("Arrive to GetMemberById controller");
-//        String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMX0.hjKR9MOIHW3OgUamQHGaqBRKdMWsn3qkYJvxo7BPEj8";
-        String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE"; // Replace this with your actual auth token
+        String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE"; 
         member =messageService.getMemberById(4, authToken);
         System.out.println("Member_Name="+member.getName());
         return member;

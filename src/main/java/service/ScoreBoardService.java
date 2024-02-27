@@ -37,10 +37,9 @@ public class ScoreBoardService {
 	        System.out.println(responseBody);
 	        ObjectMapper mapper = new ObjectMapper();
 	        JsonNode root = mapper.readTree(responseBody);
-	         teamInvestScoreNotes = root.get("message").get("teamInvestScores"); // Accessing the member object within the message
+	        teamInvestScoreNotes = root.get("message").get("teamInvestScores"); // Accessing the member object within the message
             System.out.println(teamInvestScoreNotes);
-	        
-//	        teamInvestScores.add(teamInvestScore);
+	   
 	       
 	    } else {
 	        System.out.println("Failed to fetch data from the API: " + response.getStatusCode() + " " + response.getBody());
