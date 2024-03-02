@@ -23,10 +23,11 @@
                   JSON.stringify({'event_id':event_id}));
             }
 
-            function updateDataTable(teamInvestScores) {
+            function updateDataTable(root) {
+            	console.log(root)
             	  var tableBody = document.querySelector("#teamInvestScoresTable tbody");
             	  tableBody.innerHTML = "";
-            	  teamInvestScores.forEach(function(score) {
+            	  root.message.teamInvestScores.forEach(function(score) {
             	    var row = tableBody.insertRow();
             	    row.insertCell(0).textContent = score.name;
             	    row.insertCell(1).textContent = score.value;

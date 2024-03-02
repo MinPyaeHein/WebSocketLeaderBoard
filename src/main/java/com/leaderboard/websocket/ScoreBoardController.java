@@ -33,7 +33,6 @@ public class ScoreBoardController {
     public JsonNode getTeamInvestScores(@Payload String payload) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper(); 
         Event event = objectMapper.readValue(payload, Event.class);
-
         scoreBoardService = new ScoreBoardService();
         System.out.println("Arrive to GetTeamInvestScores");
         String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE";

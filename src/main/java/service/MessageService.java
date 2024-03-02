@@ -47,6 +47,7 @@ public Member getMemberById(int member_id, String authToken) throws JsonMappingE
         System.out.println("Failed to fetch data from the API: " + response.getStatusCode() + " " + response.getBody());
     }
 	return member;
-	
 }
+
+
 }

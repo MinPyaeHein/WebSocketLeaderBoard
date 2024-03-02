@@ -48,10 +48,11 @@ public class InvestToTeamController {
         ScoreBoardService scoreBoardService = new ScoreBoardService();
         String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE";
         JsonNode jsonNodeJudge = investToTeamService.investToTeamService(tranInvestor, authToken);
+        JsonNode messageJsonNode=investToTeamService.GetJudgeById(tranInvestor, authToken);
         JsonNode jsonNodeScoreBoard = scoreBoardService.GetTeamInvestScores(tranInvestor.getEvent_id(), authToken);
         messagingTemplate.convertAndSend("/specific/scoreBoard/GetTeamInvestScores", jsonNodeScoreBoard);
     
-        messagingTemplate.convertAndSend("/specific/application/investToTeam", jsonNodeJudge);
+        messagingTemplate.convertAndSend("/specific/application/investToTeam", messageJsonNode);
     }
     
 

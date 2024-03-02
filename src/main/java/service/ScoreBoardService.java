@@ -21,7 +21,7 @@ import model.TeamInvestScore;
 public class ScoreBoardService {
 	public JsonNode GetTeamInvestScores(int event_id, String authToken) throws JsonMappingException, JsonProcessingException {
 //		ArrayList<TeamInvestScore> teamInvestScores=new ArrayList<>();
-		JsonNode teamInvestScoreNotes=null;
+		JsonNode root=null;
 		HttpHeaders headers = new HttpHeaders();
 	    headers.set("Authorization", authToken);
 	    headers.set("Content-Type", "application/json");
@@ -36,15 +36,16 @@ public class ScoreBoardService {
 	        String responseBody = response.getBody();
 	        System.out.println(responseBody);
 	        ObjectMapper mapper = new ObjectMapper();
-	        JsonNode root = mapper.readTree(responseBody);
-	        teamInvestScoreNotes = root.get("message").get("teamInvestScores"); // Accessing the member object within the message
-            System.out.println(teamInvestScoreNotes);
+	         root = mapper.readTree(responseBody);
+	        
+           
 	   
 	       
 	    } else {
 	        System.out.println("Failed to fetch data from the API: " + response.getStatusCode() + " " + response.getBody());
 	    }
-		return teamInvestScoreNotes;
+		return root;
 		
 	}
+	
 }

@@ -25,24 +25,21 @@
                         'event_id': event_id
                     }));
             }
-            function show(message) {
-                var response = document.getElementById('messages');
-                
-               
+            function show(root) {
+            	console.log(root)
+            	var response = document.getElementById('messages');
+
                 var p = document.createElement('p');
+                var messageText = "status: " + root.success + "<br>";
+                var messageText = "Judge ID: " + root.message.judge.id + "<br>";
+                messageText += "Member Name: " + root.message.member.name + "<br>";
 
-                
-                var messageText = "Transaction ID: " + message.tranInvestor.id + "<br>" +
-                                  "Amount: " + message.tranInvestor.amount + "<br>" +
-                                  "Description: " + (message.tranInvestor.desc || "N/A") + "<br>" +
-                                  "Event ID: " + message.tranInvestor.event_id + "<br>" +
-                                  "Judge ID: " + message.tranInvestor.judge_id + "<br>" +
-                                  "Judge's Current Amount: " + message.judge.current_amount;
+           
+                root.message.teamInvestScores.forEach(function(team) {
+                    messageText += "Team ID: " + team.team_id + ", Name: " + team.name + ", Amount: " + team.amount + "<br>";
+                });
 
-               
                 p.innerHTML = "Message:<br>" + messageText;
-
-               
                 response.appendChild(p);
             }
         </script>
