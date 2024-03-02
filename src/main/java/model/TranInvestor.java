@@ -4,6 +4,7 @@ public class TranInvestor {
 	private int team_id;
 	private int event_id;
 	private int judge_id;
+	private String tran_type;
 	
 	public TranInvestor(int team_id, int event_id, int judge_id) {
         this.team_id = team_id;
@@ -31,6 +32,12 @@ public class TranInvestor {
 	}
 	public void setJudge_id(int judge_id) {
 		this.judge_id = judge_id;
+	}
+	public String getTran_type() {
+		return tran_type;
+	}
+	public void setTran_type(String tran_type) {
+		this.tran_type = tran_type;
 	}
 	
 

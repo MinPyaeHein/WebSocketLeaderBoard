@@ -78,11 +78,11 @@ public class InvestToTeamService {
     }
     public JsonNode GetJudgeById(TranInvestor tranInvestor,String authToken) throws JsonMappingException, JsonProcessingException {
 //		ArrayList<TeamInvestScore> teamInvestScores=new ArrayList<>();
-		JsonNode teamInvestScoreNotes=null;
+		
 		HttpHeaders headers = new HttpHeaders();
 	    headers.set("Authorization", authToken);
 	    headers.set("Content-Type", "application/json");
-	    JsonNode messageNotes=null;
+	    
 	    Judge judge=new Judge();
 	    judge.setEvent_id(tranInvestor.getEvent_id());
 	    judge.setJudge_id(tranInvestor.getJudge_id());
