@@ -7,12 +7,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import model.TranInvestor;
 import model.TranInvestorRequest;
@@ -39,15 +42,36 @@ public class InvestToTeamService {
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, String.class);
         JsonNode root = null;
         
-        if (response.getStatusCode().is2xxSuccessful()) {
-            String responseBody = response.getBody();
-            System.out.println(responseBody);
-            root = mapper.readTree(responseBody);
-            
-            
-        } else {
-            System.out.println("Failed to fetch data from the API: " + response.getStatusCode() + " " + response.getBody());
-            return root;
+        try {
+            if (response.getStatusCode().is2xxSuccessful()) {
+                String responseBody = response.getBody();
+                System.out.println(responseBody);
+                root = mapper.readTree(responseBody);
+            } else {
+                System.out.println("Failed to fetch data from the API: " + response.getStatusCode() + " " + response.getBody());
+                return root;
+            }
+        } catch (HttpClientErrorException.UnprocessableEntity ex) {
+          
+            String responseBody = ex.getResponseBodyAsString();
+       
+            System.out.println("Caught UnprocessableEntity exception: " + responseBody);
+        
+            String responseBodyError = ex.getResponseBodyAsString();
+       
+            ObjectNode rootNode = mapper.createObjectNode();
+            rootNode.put("success", false);
+            ArrayNode errorsNode = mapper.createArrayNode();
+            errorsNode.add(responseBodyError);
+            rootNode.set("errors", errorsNode);
+            // Assign the rootNode to root
+            root = rootNode;
+            // Additional error handling code can be added here
+          
+        } catch (Exception e) {
+          
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+           
         }
 
         return root;

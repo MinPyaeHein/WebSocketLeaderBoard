@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import model.TranInvestor;
 import model.Member;
@@ -47,12 +48,17 @@ public class InvestToTeamController {
         InvestToTeamService investToTeamService = new InvestToTeamService();
         ScoreBoardService scoreBoardService = new ScoreBoardService();
         String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE";
-        JsonNode jsonNodeJudge = investToTeamService.investToTeamService(tranInvestor, authToken);
-        JsonNode messageJsonNode=investToTeamService.GetJudgeById(tranInvestor, authToken);
+        JsonNode investStatus= investToTeamService.investToTeamService(tranInvestor, authToken);
+        JsonNode judgeData=investToTeamService.GetJudgeById(tranInvestor, authToken);
         JsonNode jsonNodeScoreBoard = scoreBoardService.GetTeamInvestScores(tranInvestor.getEvent_id(), authToken);
+    
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode resultNode = mapper.createObjectNode();
+        resultNode.set("investStatus", investStatus);
+        resultNode.set("judgeData", judgeData);
         messagingTemplate.convertAndSend("/specific/scoreBoard/GetTeamInvestScores", jsonNodeScoreBoard);
     
-        messagingTemplate.convertAndSend("/specific/application/investToTeam", messageJsonNode);
+        messagingTemplate.convertAndSend("/specific/application/investToTeam", resultNode);
     }
     
 
