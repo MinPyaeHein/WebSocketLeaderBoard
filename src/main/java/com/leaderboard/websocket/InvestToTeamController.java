@@ -43,7 +43,7 @@ public class InvestToTeamController {
        
         return "invest.html"; 
     }
-    @MessageMapping("/application/investToTeam")
+    @MessageMapping("/transaction")
     public void getTeamInvestScores(@Payload TranInvestor tranInvestor) throws Exception {
         InvestToTeamService investToTeamService = new InvestToTeamService();
         ScoreBoardService scoreBoardService = new ScoreBoardService();
@@ -56,9 +56,8 @@ public class InvestToTeamController {
         ObjectNode resultNode = mapper.createObjectNode();
         resultNode.set("investStatus", investStatus);
         resultNode.set("judgeData", judgeData);
-        messagingTemplate.convertAndSend("/specific/scoreBoard/GetTeamInvestScores", jsonNodeScoreBoard);
-    
-        messagingTemplate.convertAndSend("/specific/application/investToTeam", resultNode);
+        messagingTemplate.convertAndSend("/specific/scoreBoard/teamScores", jsonNodeScoreBoard);  
+        messagingTemplate.convertAndSend("/specific/teamScores/"+tranInvestor.getJudge_id()+"/"+tranInvestor.getEvent_id(), resultNode);
     }
     
 

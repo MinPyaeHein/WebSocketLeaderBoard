@@ -9,7 +9,7 @@
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                
-               stompClient.subscribe('/specific/application/investToTeam', function(result) {
+               stompClient.subscribe('/specific/teamScores/5/32', function(result) {
             	   show(JSON.parse(result.body));
                });
             });
@@ -19,7 +19,7 @@
                 var judge_id = document.getElementById('judge_id').value;
                 var event_id = document.getElementById('event_id').value;
                 var tran_type = document.getElementById('tran_type').value;
-                stompClient.send("/app/application/investToTeam", {},
+                stompClient.send("/app/transaction", {},
                     JSON.stringify({
                         'team_id': team_id,
                         'judge_id': judge_id,

@@ -29,7 +29,7 @@ public class ScoreBoardController {
     ScoreBoardService scoreBoardService;
 
     @MessageMapping("/scoreBoard/GetTeamInvestScores")
-    @SendTo("/specific/scoreBoard/GetTeamInvestScores") 
+    @SendTo("/specific/scoreBoard/teamScores") 
     public JsonNode getTeamInvestScores(@Payload String payload) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper(); 
         Event event = objectMapper.readValue(payload, Event.class);
