@@ -25,18 +25,24 @@ import service.ScoreBoardService;
 @Controller
 public class ScoreBoardController {
     
-
+	
+	
     ScoreBoardService scoreBoardService;
-
+    private final SimpMessagingTemplate messagingTemplate;
+    @Autowired
+    public ScoreBoardController(SimpMessagingTemplate messagingTemplate) {
+        this.messagingTemplate = messagingTemplate;
+    }
     @MessageMapping("/scoreBoard/GetTeamInvestScores")
-    @SendTo("/specific/scoreBoard/teamScores") 
-    public JsonNode getTeamInvestScores(@Payload String payload) throws Exception {
+//    @SendTo("/specific/scoreBoard/teamScores") 
+    public void getTeamInvestScores(@Payload String payload) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper(); 
         Event event = objectMapper.readValue(payload, Event.class);
         scoreBoardService = new ScoreBoardService();
         System.out.println("Arrive to GetTeamInvestScores");
         String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE";
         JsonNode jsonNode = scoreBoardService.GetTeamInvestScores(event.getEvent_id(), authToken);
-        return jsonNode;
+        messagingTemplate.convertAndSend("/specific/scoreBoard/teamScores/"+event.getEvent_id(), jsonNode);  
+       
     }
 }

@@ -56,7 +56,7 @@ public class InvestToTeamController {
         ObjectNode resultNode = mapper.createObjectNode();
         resultNode.set("investStatus", investStatus);
         resultNode.set("judgeData", judgeData);
-        messagingTemplate.convertAndSend("/specific/scoreBoard/teamScores", jsonNodeScoreBoard);  
+        messagingTemplate.convertAndSend("/specific/scoreBoard/teamScores/"+tranInvestor.getEvent_id(), jsonNodeScoreBoard);  
         messagingTemplate.convertAndSend("/specific/teamScores/"+tranInvestor.getJudge_id()+"/"+tranInvestor.getEvent_id(), resultNode);
     }
     
