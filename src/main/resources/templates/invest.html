@@ -9,7 +9,7 @@
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                
-               stompClient.subscribe('/specific/teamScores/5/32', function(result) {
+               stompClient.subscribe('/specific/teamScores/132/38', function(result) {
             	   show(JSON.parse(result.body));
                });
             });
@@ -19,12 +19,14 @@
                 var judge_id = document.getElementById('judge_id').value;
                 var event_id = document.getElementById('event_id').value;
                 var tran_type = document.getElementById('tran_type').value;
+                var investor_type = document.getElementById('investor_type').value;
                 stompClient.send("/app/transaction", {},
                     JSON.stringify({
                         'team_id': team_id,
                         'judge_id': judge_id,
                         'event_id': event_id,
-                        'tran_type': tran_type
+                        'tran_type': tran_type,
+                        'investor_type': investor_type
                     }));
             }
             function show(root) {
@@ -36,6 +38,7 @@
                  messageText+= "ErrorMessage: " + root.investStatus.errors + "<br>";
                  messageText+= "Judge ID: " + root.judgeData.message.judge.id + "<br>";
                  messageText += "Member Name: " + root.judgeData.message.member.name + "<br>";
+                 
 
            
                 root.judgeData.message.teamInvestScores.forEach(function(team) {
@@ -53,6 +56,7 @@
 <input type="number" id="event_id" placeholder="Event Id"><br>
 <input type="number" id="judge_id" placeholder="Judge Id"><br>
 <input type="text" id="tran_type" placeholder="tran_type"><br>
+<input type="text" id="investor_type" placeholder="investor_type"><br>
 <button onclick="investToTeam()">Send Message</button>
 
  <div id="messages"></div>

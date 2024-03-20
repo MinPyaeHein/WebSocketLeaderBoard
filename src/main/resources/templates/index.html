@@ -10,7 +10,7 @@
             
             stompClient.connect({}, function(frame) {  
                console.log("Getting Data From Sever")
-               stompClient.subscribe('/specific/scoreBoard/teamScores/32', function(result) {
+               stompClient.subscribe('/specific/scoreBoard/teamScores/38', function(result) {
             	   updateDataTable(JSON.parse(result.body));
                });
                

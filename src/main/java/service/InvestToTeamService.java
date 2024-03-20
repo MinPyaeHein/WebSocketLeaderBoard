@@ -28,6 +28,7 @@ public class InvestToTeamService {
 
     public JsonNode investToTeamService(TranInvestor investToTeam, String authToken) throws JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
+        System.out.println(investToTeam.toString());
 //        headers.set("Authorization","eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMX0.hjKR9MOIHW3OgUamQHGaqBRKdMWsn3qkYJvxo7BPEj8");
         headers.set("Authorization",authToken);
         headers.set("Content-Type", "application/json");
@@ -38,7 +39,6 @@ public class InvestToTeamService {
         HttpEntity<String> requestEntity = new HttpEntity<>(memberRequestBody, headers);
         RestTemplate restTemplate = new RestTemplate();
         String apiUrl = "https://stormy-hamlet-97616-f066246815d5.herokuapp.com/api/v1/tran_investors"; 
-//        String apiUrl = "http://127.0.0.1:3000/api/v1/tran_investors";
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, String.class);
         JsonNode root = null;
         

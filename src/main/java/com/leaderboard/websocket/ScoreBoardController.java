@@ -34,7 +34,6 @@ public class ScoreBoardController {
         this.messagingTemplate = messagingTemplate;
     }
     @MessageMapping("/scoreBoard/GetTeamInvestScores")
-//    @SendTo("/specific/scoreBoard/teamScores") 
     public void getTeamInvestScores(@Payload String payload) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper(); 
         Event event = objectMapper.readValue(payload, Event.class);
