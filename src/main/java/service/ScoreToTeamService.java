@@ -40,7 +40,6 @@ public class ScoreToTeamService {
         try {
             if (response.getStatusCode().is2xxSuccessful()) {
                 String responseBody = response.getBody();
-                System.out.println(responseBody);
                 root = mapper.readTree(responseBody);
             } else {
                 System.out.println("Failed to fetch data from the API: " + response.getStatusCode() + " " + response.getBody());

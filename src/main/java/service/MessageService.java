@@ -29,7 +29,7 @@ public Member getMemberById(int member_id, String authToken) throws JsonMappingE
     
     if (response.getStatusCode().is2xxSuccessful()) {
         String responseBody = response.getBody();
-        System.out.println(responseBody);
+
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode root = mapper.readTree(responseBody);

@@ -26,8 +26,7 @@ public class ScoreBoardService {
 		HttpHeaders headers = new HttpHeaders();
 	    headers.set("Authorization", authToken);
 	    headers.set("Content-Type", "application/json");
-	    String memberRequestBody = "{\"event_id\":"+event_id+"}"; 
-	    
+	    String memberRequestBody = "{\"event_id\":"+event_id+"}";
 	    HttpEntity<String> requestEntity = new HttpEntity<>(memberRequestBody, headers);
 	    RestTemplate restTemplate = new RestTemplate();
 	    String apiUrl = "https://stormy-hamlet-97616-f066246815d5.herokuapp.com/api/v1/tran_investors/invest_amounts_by_team"; 
@@ -38,10 +37,6 @@ public class ScoreBoardService {
 	        System.out.println(responseBody);
 	        ObjectMapper mapper = new ObjectMapper();
 	         root = mapper.readTree(responseBody);
-	        
-           
-	   
-	       
 	    } else {
 	        System.out.println("Failed to fetch data from the API: " + response.getStatusCode() + " " + response.getBody());
 	    }

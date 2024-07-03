@@ -41,7 +41,7 @@ public class InvestToTeamService {
         try {
             if (response.getStatusCode().is2xxSuccessful()) {
                 String responseBody = response.getBody();
-                System.out.println(responseBody);
+
                 root = mapper.readTree(responseBody);
             } else {
                 System.out.println("Failed to fetch data from the API: " + response.getStatusCode() + " " + response.getBody());
@@ -51,7 +51,7 @@ public class InvestToTeamService {
           
             String responseBody = ex.getResponseBodyAsString();
        
-            System.out.println("Caught UnprocessableEntity exception: " + responseBody);
+
         
             String responseBodyError = ex.getResponseBodyAsString();
        
@@ -95,7 +95,6 @@ public class InvestToTeamService {
 	    ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, String.class);   
 	    if (response.getStatusCode().is2xxSuccessful()) {
 	        String responseBody = response.getBody();
-	        System.out.println(responseBody);
 	         root = mapper.readTree(responseBody);
 		    } else {
 	        System.out.println("Failed to fetch data from the API: " + response.getStatusCode() + " " + response.getBody());
