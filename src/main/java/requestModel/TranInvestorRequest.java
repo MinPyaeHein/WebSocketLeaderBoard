@@ -1,4 +1,6 @@
-package model;
+package requestModel;
+
+import model.TranInvestor;
 
 public class TranInvestorRequest {
 	 private TranInvestor tran_investor;

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+    <script type="text/javascript">
+        var stompClient = null;
+        function connect() {
+            var socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.heartbeat.outgoing = 10000;
+            stompClient.heartbeat.incoming = 10000;
+            stompClient.connect({}, function(frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/destination/teams/event/103/totalScore', function(result) {
+                    show(JSON.parse(result.body));
+                });
+            });
+        }
+
+        function sendScore() {
+            var team_id = document.getElementById('team_id').value;
+            var event_id = document.getElementById('event_id').value;
+            var judge_id = document.getElementById('judge_id').value;
+            var token = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE';
+            var tran_score = JSON.parse(document.getElementById('tran_score').value);
+
+            stompClient.send("/app/score", {}, JSON.stringify({
+                'team_id': team_id,
+                'event_id': event_id,
+                'judge_id': judge_id,
+                'token': token,
+                'tran_score': tran_score
+            }));
+        }
+
+        function show(root) {
+            console.log(root);
+            var response = document.getElementById('messages');
+            var p = document.createElement('p');
+
+            var messageText = "Success: " + root.investStatus.success + "<br>";
+            messageText += "ErrorMessage: " + root.investStatus.errors + "<br>";
+
+            root.jsonNodeScoreBoard.teamSkillCategoryScores.forEach(function(score) {
+                messageText += "Team ID: " + score.team_id + ", Name: " + score.name + ", Score: " + score.score + "<br>";
+            });
+
+            p.innerHTML = "Message:<br>" + messageText;
+            response.appendChild(p);
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            connect();
+        });
+    </script>
+</head>
+<body>
+<input type="number" id="team_id" placeholder="Team Id"><br>
+<input type="number" id="event_id" placeholder="Event Id"><br>
+<input type="number" id="judge_id" placeholder="Judge Id"><br>
+<textarea id="tran_score" placeholder='Tran Score (e.g., [{"score": 8.5, "score_matrix_id": 1, "desc": "Good job"}, {"score": 9.0, "score_matrix_id": 2, "desc": "Excellent"}])'></textarea><br>
+<button onclick="sendScore()">Send Score</button>
+<div id="messages"></div>
+</body>
+</html>

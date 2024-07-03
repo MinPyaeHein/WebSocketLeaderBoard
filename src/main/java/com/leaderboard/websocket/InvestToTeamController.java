@@ -50,7 +50,7 @@ public class InvestToTeamController {
         String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE";
         JsonNode investStatus= investToTeamService.investToTeamService(tranInvestor, authToken);
         JsonNode judgeData=investToTeamService.GetJudgeById(tranInvestor, authToken);
-        JsonNode jsonNodeScoreBoard = scoreBoardService.GetTeamInvestScores(tranInvestor.getEvent_id(), authToken);
+        JsonNode jsonNodeScoreBoard = scoreBoardService.getTeamInvestScores(tranInvestor.getEvent_id(), authToken);
     
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode resultNode = mapper.createObjectNode();

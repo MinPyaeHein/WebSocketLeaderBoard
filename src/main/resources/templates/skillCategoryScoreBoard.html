@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Team Invest Scores</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script type="text/javascript">
+
+
+        var stompClient = null;
+        var privateStompClient = null;
+        var socket = new SockJS('/ws');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function(frame) {
+            console.log("Getting Data From Sever")
+            stompClient.subscribe('/destination/teams/event/103/totalScore', function(result) {
+                updateDataTable(JSON.parse(result.body));
+            });
+
+        })
+
+
+        function GetSkillCategoryScores() {
+            var eventId = document.getElementById('event_id').value;
+            var token = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE"; // Replace with actual token retrieval method
+            var payload = { eventId: parseInt(eventId), token: token };
+            stompClient.send("/app/teams/event/totalScore", {}, JSON.stringify(payload));
+        }
+
+        function updateDataTable(data) {
+            console.log(data);
+            var tableBody = document.querySelector("#teamInvestScoresTable tbody");
+            tableBody.innerHTML = "";
+            data.message.teams.forEach(function(score) {
+                var row = tableBody.insertRow();
+                row.insertCell(0).textContent = score.name;
+                row.insertCell(1).textContent = score.total_score;
+                row.insertCell(2).textContent = score.id;
+            });
+        }
+
+
+    </script>
+</head>
+<body>
+<div>
+    <button id="GetTeamInvestScores" onclick="GetSkillCategoryScores();">Send</button>
+    <input type="number" id="event_id" placeholder="Put Event Id"/>
+</div>
+
+<br />
+<br />
+<br />
+
+<div id="messages"></div>
+
+<table id="teamInvestScoresTable" border="1">
+    <thead>
+    <tr>
+        <th>Team Name</th>
+        <th>Total Score</th>
+        <th>Team ID</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Table body will be populated dynamically -->
+    </tbody>
+</table>
+</body>
+</html>

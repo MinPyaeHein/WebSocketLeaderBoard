@@ -1,7 +1,5 @@
 package service;
 
-import java.util.ArrayList;
-
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,10 +16,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import model.TranInvestor;
-import model.TranInvestorRequest;
+import requestModel.TranInvestorRequest;
 import model.Judge;
-import model.Member;
-import model.TeamInvestScore;
 
 @Service
 public class InvestToTeamService {

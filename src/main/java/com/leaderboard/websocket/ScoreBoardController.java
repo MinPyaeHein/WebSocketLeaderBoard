@@ -11,6 +11,8 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -19,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import config.Message;
 import model.Event;
 import model.Member;
+import requestModel.EventRequest;
 import service.MessageService;
 import service.ScoreBoardService;
 
@@ -26,22 +29,37 @@ import service.ScoreBoardService;
 public class ScoreBoardController {
     
 	
-	
+
     ScoreBoardService scoreBoardService;
     private final SimpMessagingTemplate messagingTemplate;
     @Autowired
     public ScoreBoardController(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
+        scoreBoardService = new ScoreBoardService();
     }
     @MessageMapping("/scoreBoard/GetTeamInvestScores")
     public void getTeamInvestScores(@Payload String payload) throws Exception {
         ObjectMapper objectMapper = new ObjectMapper(); 
         Event event = objectMapper.readValue(payload, Event.class);
-        scoreBoardService = new ScoreBoardService();
         System.out.println("Arrive to GetTeamInvestScores");
         String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE";
-        JsonNode jsonNode = scoreBoardService.GetTeamInvestScores(event.getEvent_id(), authToken);
+        JsonNode jsonNode = scoreBoardService.getTeamInvestScores(event.getEvent_id(), authToken);
         messagingTemplate.convertAndSend("/specific/scoreBoard/teamScores/"+event.getEvent_id(), jsonNode);  
        
+    }
+
+    @GetMapping("/skillCategoryScoreBoard")
+    public String showCustomPage() {
+
+        return "skillCategoryScoreBoard.html";
+    }
+
+    @MessageMapping("/teams/event/totalScore")
+    public void getTeamInvestScores(@Payload EventRequest eventRequest) throws Exception {
+        System.out.println("Arrive to GetTeamSkillCategoryScores");
+        String authToken = eventRequest.getToken();
+        JsonNode jsonNode = scoreBoardService.getTeamSkillCategoryScores(eventRequest);
+        String destinationPath="/destination/teams/event/" + eventRequest.getEventId() + "/totalScore";
+        messagingTemplate.convertAndSend(destinationPath, jsonNode);
     }
 }

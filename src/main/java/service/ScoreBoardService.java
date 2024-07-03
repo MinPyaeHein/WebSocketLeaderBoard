@@ -16,10 +16,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import model.Member;
 import model.TeamInvestScore;
+import requestModel.EventRequest;
 
 @Service
 public class ScoreBoardService {
-	public JsonNode GetTeamInvestScores(int event_id, String authToken) throws JsonMappingException, JsonProcessingException {
+	public JsonNode getTeamInvestScores(int event_id, String authToken) throws JsonMappingException, JsonProcessingException {
 //		ArrayList<TeamInvestScore> teamInvestScores=new ArrayList<>();
 		JsonNode root=null;
 		HttpHeaders headers = new HttpHeaders();
@@ -46,6 +47,26 @@ public class ScoreBoardService {
 	    }
 		return root;
 		
+	}
+
+	public JsonNode getTeamSkillCategoryScores(EventRequest eventRequest) throws JsonMappingException, JsonProcessingException {
+		JsonNode root=null;
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", eventRequest.getToken());
+		headers.set("Content-Type", "application/json");
+		HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+		RestTemplate restTemplate = new RestTemplate();
+		String apiUrl = "https://stormy-hamlet-97616-f066246815d5.herokuapp.com/api/v2/teams/event/"+eventRequest.getEventId()+"/categoriesScore";
+		ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, requestEntity, String.class);
+		if (response.getStatusCode().is2xxSuccessful()) {
+			String responseBody = response.getBody();
+			ObjectMapper mapper = new ObjectMapper();
+			root = mapper.readTree(responseBody);
+		} else {
+			System.out.println("Failed to fetch data from the API: " + response.getStatusCode() + " " + response.getBody());
+		}
+		return root;
+
 	}
 	
 }
