@@ -7,12 +7,17 @@
             var privateStompClient = null;
             var socket = new SockJS('/ws');
             stompClient = Stomp.over(socket);
+            stompClient.heartbeat.outgoing = 10000; 
+            stompClient.heartbeat.incoming = 10000; 
+
             stompClient.connect({}, function(frame) {
                
-               stompClient.subscribe('/specific/teamScores/132/38', function(result) {
+               stompClient.subscribe('/specific/teamScores/63/38', function(result) {
             	   show(JSON.parse(result.body));
                });
             });
+            
+            
 
             function investToTeam() {
                 var team_id = document.getElementById('team_id').value;
