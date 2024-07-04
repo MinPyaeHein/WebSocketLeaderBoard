@@ -13,13 +13,13 @@
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, function(frame) {
-            console.log("Getting Data From Sever")
+
             stompClient.subscribe('/destination/teams/event/105/totalScore', function(result) {
                 updateDataTable(JSON.parse(result.body));
             });
             stompClient.subscribe('/destination/teams/event/105/categoriesScore/judge', function(result) {
-                console.log(JSON.parse("judge individual score for all teams"));
-                console.log(JSON.parse(result.body));
+                console.log("judge individual score for all teams==",JSON.parse(result.body));
+
             });
 
         })

@@ -48,8 +48,6 @@ public class ScoreToTeamController {
         resultNode.set("investStatus", investStatus);
         messagingTemplate.convertAndSend("/destination/teams/event/" + eventRequest.getEventId() + "/totalScore", jsonNodeScoreBoard);
         messagingTemplate.convertAndSend("/destination/teams/event/" + eventRequest.getEventId() + "/categoriesScore/judge", teamScoreList);
-
-//        messagingTemplate.convertAndSend("/specific/teamScores/"+tranInvestor.getJudge_id()+"/"+tranInvestor.getEvent_id(), resultNode);
     }
     
 
