@@ -71,4 +71,52 @@ public class ScoreToTeamService {
         return root;
     }
 
+    public JsonNode getAllTeamScoreCategoryByAllJudge(TranScore tranScore) throws JsonProcessingException {
+        HttpHeaders headers = new HttpHeaders();
+        System.out.println(tranScore.toString());
+        headers.set("Authorization",tranScore.getToken());
+        headers.set("Content-Type", "application/json");
+        ObjectMapper mapper = new ObjectMapper();
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+        RestTemplate restTemplate = new RestTemplate();
+        String apiUrl = "https://stormy-hamlet-97616-f066246815d5.herokuapp.com/api/v2/teams/event/"+tranScore.getEvent_id()+"/categoriesScore/judge";
+        ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, requestEntity, String.class);
+        JsonNode root = null;
+
+        try {
+            if (response.getStatusCode().is2xxSuccessful()) {
+                String responseBody = response.getBody();
+                root = mapper.readTree(responseBody);
+            } else {
+                System.out.println("Failed to fetch data from the API: " + response.getStatusCode() + " " + response.getBody());
+                return root;
+            }
+        } catch (HttpClientErrorException.UnprocessableEntity ex) {
+
+            String responseBody = ex.getResponseBodyAsString();
+
+            System.out.println("Caught UnprocessableEntity exception: " + responseBody);
+
+            String responseBodyError = ex.getResponseBodyAsString();
+
+            ObjectNode rootNode = mapper.createObjectNode();
+            rootNode.put("success", false);
+            ArrayNode errorsNode = mapper.createArrayNode();
+            errorsNode.add(responseBodyError);
+            rootNode.set("errors", errorsNode);
+            // Assign the rootNode to root
+            root = rootNode;
+            // Additional error handling code can be added here
+
+        } catch (Exception e) {
+
+            System.out.println("An unexpected error occurred: " + e.getMessage());
+
+        }
+
+        return root;
+    }
+
+
+
 }

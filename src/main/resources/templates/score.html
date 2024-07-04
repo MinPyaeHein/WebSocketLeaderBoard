@@ -12,7 +12,7 @@
             stompClient.heartbeat.incoming = 10000;
             stompClient.connect({}, function(frame) {
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/destination/teams/event/103/totalScore', function(result) {
+                stompClient.subscribe('/destination/teams/event/105/totalScore', function(result) {
                     show(JSON.parse(result.body));
                 });
             });
@@ -22,7 +22,7 @@
             var team_id = document.getElementById('team_id').value;
             var event_id = document.getElementById('event_id').value;
             var judge_id = document.getElementById('judge_id').value;
-            var token = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE';
+            var token = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyMTB9.jJ8Pdy7nBhGasqPfS6B9X5_StrZBu6pt8MUMBk950hM';
             var tran_score = JSON.parse(document.getElementById('tran_score').value);
 
             stompClient.send("/app/score", {}, JSON.stringify({

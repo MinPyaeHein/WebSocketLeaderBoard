@@ -42,10 +42,13 @@ public class ScoreToTeamController {
         JsonNode investStatus= scoreToTeamService.scoreToTeamService(tranScore);
         EventRequest eventRequest= new EventRequest(tranScore.getEvent_id(), tranScore.getToken());
         JsonNode jsonNodeScoreBoard = scoreBoardService.getTeamSkillCategoryScores(eventRequest);
+        JsonNode teamScoreList=scoreToTeamService.getAllTeamScoreCategoryByAllJudge(tranScore);
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode resultNode = mapper.createObjectNode();
         resultNode.set("investStatus", investStatus);
         messagingTemplate.convertAndSend("/destination/teams/event/" + eventRequest.getEventId() + "/totalScore", jsonNodeScoreBoard);
+        messagingTemplate.convertAndSend("/destination/teams/event/" + eventRequest.getEventId() + "/categoriesScore/judge", teamScoreList);
+
 //        messagingTemplate.convertAndSend("/specific/teamScores/"+tranInvestor.getJudge_id()+"/"+tranInvestor.getEvent_id(), resultNode);
     }
     
