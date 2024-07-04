@@ -39,14 +39,15 @@ public class ScoreToTeamController {
     @MessageMapping("/score")
     public void getTeamInvestScores(@Payload TranScore tranScore) throws Exception {
         ScoreBoardService scoreBoardService = new ScoreBoardService();
-        JsonNode investStatus= scoreToTeamService.scoreToTeamService(tranScore);
+        JsonNode scoreStatus= scoreToTeamService.scoreToTeamService(tranScore);
         EventRequest eventRequest= new EventRequest(tranScore.getEvent_id(), tranScore.getToken());
         JsonNode jsonNodeScoreBoard = scoreBoardService.getTeamSkillCategoryScores(eventRequest);
         JsonNode teamScoreList=scoreToTeamService.getAllTeamScoreCategoryByAllJudge(tranScore);
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode resultNode = mapper.createObjectNode();
-        resultNode.set("investStatus", investStatus);
-        messagingTemplate.convertAndSend("/destination/teams/event/" + eventRequest.getEventId() + "/totalScore", jsonNodeScoreBoard);
+        resultNode.set("scoreStatus", scoreStatus);
+        resultNode.set("jsonNodeScoreBoard", jsonNodeScoreBoard);
+        messagingTemplate.convertAndSend("/destination/teams/event/" + eventRequest.getEventId() + "/totalScore", resultNode);
         messagingTemplate.convertAndSend("/destination/teams/event/" + eventRequest.getEventId() + "/categoriesScore/judge", teamScoreList);
     }
     

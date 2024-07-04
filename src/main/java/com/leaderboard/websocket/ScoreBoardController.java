@@ -1,5 +1,6 @@
 package com.leaderboard.websocket;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -44,13 +45,11 @@ public class ScoreBoardController {
         System.out.println("Arrive to GetTeamInvestScores");
         String authToken = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo2fQ.XknT5Dw8aY7bAAUE1qBoHZQKXFUK06AMf8M_XuuVPoE";
         JsonNode jsonNode = scoreBoardService.getTeamInvestScores(event.getEvent_id(), authToken);
-        messagingTemplate.convertAndSend("/specific/scoreBoard/teamScores/"+event.getEvent_id(), jsonNode);  
-       
+        messagingTemplate.convertAndSend("/specific/scoreBoard/teamScores/"+event.getEvent_id(), jsonNode);
     }
 
     @GetMapping("/skillCategoryScoreBoard")
     public String showCustomPage() {
-
         return "skillCategoryScoreBoard.html";
     }
 
@@ -58,8 +57,11 @@ public class ScoreBoardController {
     public void getTeamInvestScores(@Payload EventRequest eventRequest) throws Exception {
         System.out.println("Arrive to GetTeamSkillCategoryScores");
         String authToken = eventRequest.getToken();
-        JsonNode jsonNode = scoreBoardService.getTeamSkillCategoryScores(eventRequest);
+        JsonNode jsonNodeScoreBoard = scoreBoardService.getTeamSkillCategoryScores(eventRequest);
         String destinationPath="/destination/teams/event/" + eventRequest.getEventId() + "/totalScore";
-        messagingTemplate.convertAndSend(destinationPath, jsonNode);
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode resultNode = mapper.createObjectNode();
+        resultNode.set("jsonNodeScoreBoard", jsonNodeScoreBoard);
+        messagingTemplate.convertAndSend(destinationPath, resultNode);
     }
 }

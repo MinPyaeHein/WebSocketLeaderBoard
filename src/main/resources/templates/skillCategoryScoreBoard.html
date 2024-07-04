@@ -5,8 +5,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script type="text/javascript">
-
-
         var stompClient = null;
         var privateStompClient = null;
         var socket = new SockJS('/ws');
@@ -15,7 +13,11 @@
         stompClient.connect({}, function(frame) {
 
             stompClient.subscribe('/destination/teams/event/105/totalScore', function(result) {
-                updateDataTable(JSON.parse(result.body));
+                const resultData = JSON.parse(result.body);
+                const scoreStatus = resultData.scoreStatus;
+                const jsonNodeScoreBoard = resultData.jsonNodeScoreBoard;
+                updateDataTable(jsonNodeScoreBoard);
+                console.log('scoreStatus: ' , scoreStatus);
             });
             stompClient.subscribe('/destination/teams/event/105/categoriesScore/judge', function(result) {
                 console.log("judge individual score for all teams==",JSON.parse(result.body));

@@ -13,7 +13,11 @@
             stompClient.connect({}, function(frame) {
                 console.log('Connected: ' + frame);
                 stompClient.subscribe('/destination/teams/event/105/totalScore', function(result) {
-                    show(JSON.parse(result.body));
+                    const resultData = JSON.parse(result.body);
+                    const scoreStatus = resultData.scoreStatus;
+                    const jsonNodeScoreBoard = resultData.jsonNodeScoreBoard;
+                    console.log('scoreStatus: ' + scoreStatus);
+                    show(jsonNodeScoreBoard);
                 });
             });
         }
