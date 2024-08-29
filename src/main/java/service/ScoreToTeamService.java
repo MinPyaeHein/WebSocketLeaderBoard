@@ -79,7 +79,7 @@ public class ScoreToTeamService {
         ObjectMapper mapper = new ObjectMapper();
         HttpEntity<String> requestEntity = new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
-        String apiUrl = "https://stormy-hamlet-97616-f066246815d5.herokuapp.com/api/v2/teams/event/"+tranScore.getEvent_id()+"/categoriesScore/judge";
+        String apiUrl = "https://stormy-hamlet-97616-f066246815d5.herokuapp.com/api/v2/teams/event/"+tranScore.getEvent_id()+"/categoriesScore";
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, requestEntity, String.class);
         JsonNode root = null;
 

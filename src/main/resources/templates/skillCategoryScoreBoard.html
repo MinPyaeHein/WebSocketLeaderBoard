@@ -9,17 +9,16 @@
         var privateStompClient = null;
         var socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
-
         stompClient.connect({}, function(frame) {
 
-            stompClient.subscribe('/destination/teams/event/105/totalScore', function(result) {
+            stompClient.subscribe('/destination/teams/event/118/totalScore', function(result) {
                 const resultData = JSON.parse(result.body);
                 const scoreStatus = resultData.scoreStatus;
                 const jsonNodeScoreBoard = resultData.jsonNodeScoreBoard;
                 updateDataTable(jsonNodeScoreBoard);
                 console.log('scoreStatus: ' , scoreStatus);
             });
-            stompClient.subscribe('/destination/teams/event/105/categoriesScore/judge', function(result) {
+            stompClient.subscribe('/destination/teams/event/118/categoriesScore/judge', function(result) {
                 console.log("judge individual score for all teams==",JSON.parse(result.body));
 
             });
